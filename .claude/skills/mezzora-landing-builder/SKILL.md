@@ -57,7 +57,7 @@ Estructura estándar (adaptar el orden por vertical):
 - **Todo el texto y los datos van en `lib/content.ts`.** Los componentes no llevan textos hardcodeados. Así, los cambios que pida el cliente se hacen en minutos.
 - Formulario de conversión: al enviar, abre WhatsApp con un mensaje prellenado (`wa.me/<num>?text=`). Si existe `NEXT_PUBLIC_LEAD_WEBHOOK`, además hace POST del lead en JSON. Ese es el gancho para vender la automatización n8n (lead → CRM → respuesta automática → follow-up).
 - Fotos en `public/images/` con nombres descriptivos, en JPG q85, máximo 1920px. `alt` descriptivo en italiano.
-- Animaciones: un único `Reveal` (framer-motion `whileInView`, `once`) que respete `prefers-reduced-motion`. El marquee se hace con CSS puro.
+- Animaciones: `Reveal` sin librerías, con `data-reveal` y un script inline en `<head>` (IntersectionObserver, failsafe de 3s, respeta `prefers-reduced-motion`). **Nunca framer-motion con `initial` de opacity 0**: si el JS falla (4G mala), la página queda en blanco. El marquee se hace con CSS puro.
 - Accesibilidad mínima: `aria-label` en los botones de icono, `aria-pressed` en los chips, contraste AA en el texto del cuerpo.
 
 ## Fase 4 — QA (obligatorio antes de mostrar)
@@ -68,13 +68,13 @@ Estructura estándar (adaptar el orden por vertical):
    - Ningún titular deja una palabra huérfana en móvil.
    - El texto en outline es visible (el stroke con color explícito, no `currentColor`).
    - Sin scroll horizontal (`scrollWidth > innerWidth`).
-   - Ningún reveal queda en opacity 0.
+   - Ningún reveal queda en opacity 0, tampoco con los chunks JS bloqueados (`page.route('**/_next/static/chunks/**', r => r.abort())`).
    - Las fotos no cortan lo importante (usar `object-position`).
 4. Después de cada rebuild, reiniciar `next start`: un servidor viejo con un build nuevo rompe la hidratación.
 
 ## Fase 5 — Entrega y cierre
 
-1. Deploy en Vercel (preview gratis) y link corto para mandar por WhatsApp.
+1. Deploy en Vercel: Esteban importa el repo en vercel.com (Add New → Project → Deploy, sin configurar nada). Compartir el dominio de producción `<repo>.vercel.app`, **no** la URL del deployment (`<repo>-<hash>-...vercel.app`), que pide login de Vercel. Cada push a `main` se redespliega solo. Nota: el Chromium de la sandbox no carga sitios externos a través del proxy; verificar producción con curl (todos los `/_next/static` en 200) y hacer el QA visual en local.
 2. Mostrarlo **en el móvil del dueño**, no en un portátil: así lo verán sus clientes.
 3. Llevar preparadas 3 mejoras de negocio observadas (no técnicas) y la propuesta de automatización de leads.
 4. CRM: Status → `Contattato`, fijar la fecha de la próxima acción y anotar en Note las objeciones y los ajustes pedidos.
