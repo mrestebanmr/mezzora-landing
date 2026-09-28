@@ -74,11 +74,12 @@ Estructura estándar (adaptar el orden por vertical):
 
 ## Fase 5 — Entrega y cierre
 
-1. Deploy en Vercel: Esteban importa el repo en vercel.com (Add New → Project → Deploy, sin configurar nada). Compartir el dominio de producción `<repo>.vercel.app`, **no** la URL del deployment (`<repo>-<hash>-...vercel.app`), que pide login de Vercel. Cada push a `main` se redespliega solo. Nota: el Chromium de la sandbox no carga sitios externos a través del proxy; verificar producción con curl (todos los `/_next/static` en 200) y hacer el QA visual en local.
+1. Deploy en Vercel: Esteban importa el repo en vercel.com (Add New → Project → Deploy, sin configurar nada). Compartir el dominio de producción `<repo>.vercel.app`, **no** la URL del deployment (`<repo>-<hash>-...vercel.app`), que pide login de Vercel. Cada push a `main` se redespliega solo. **Vercel Hobby bloquea ("Blocked") los commits cuyo autor no es la cuenta de GitHub de Esteban**: configurar en cada repo `git config user.email "231981101+mrestebanmr@users.noreply.github.com"` y `user.name "Esteban Muriel"` antes del primer commit. Un commit bloqueado no se arregla con Redeploy: hace falta un commit nuevo con el autor correcto. Nota: el Chromium de la sandbox no carga sitios externos a través del proxy; verificar producción con curl (todos los `/_next/static` en 200) y hacer el QA visual en local.
 2. Mostrarlo **en el móvil del dueño**, no en un portátil: así lo verán sus clientes.
-3. Llevar preparadas 3 mejoras de negocio observadas (no técnicas) y la propuesta de automatización de leads.
-4. CRM: Status → `Contattato`, fijar la fecha de la próxima acción y anotar en Note las objeciones y los ajustes pedidos.
-5. Los ajustes que pida el cliente se hacen en `content.ts`: un ciclo de cambios incluido, el resto se cotiza.
+3. Mientras el cliente no apruebe: `robots: { index: false }` en metadata + `app/robots.ts` con `disallow: "/"`. Se quita al pasar al dominio oficial.
+4. Llevar preparadas 3 mejoras de negocio observadas (no técnicas) y la propuesta de automatización de leads.
+5. CRM: Status → `Contattato`, fijar la fecha de la próxima acción y anotar en Note las objeciones y los ajustes pedidos.
+6. Los ajustes que pida el cliente se hacen en `content.ts`: un ciclo de cambios incluido, el resto se cotiza.
 
 ## Qué NO hacer
 
