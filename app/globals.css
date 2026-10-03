@@ -8,8 +8,16 @@
   --color-text-secondary: #A0A0A0;
   --color-accent: #00C853;
   --color-accent-hover: #00E865;
+  --color-accent-deep: #00592A;
+  --color-accent-mint: #8CFFBF;
   --font-heading: var(--font-manrope);
   --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+:root {
+  /* 0 → 1 a lo largo de toda la página; lo actualiza el script de layout.tsx */
+  --sp: 0;
 }
 
 html {
@@ -24,4 +32,416 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(0, 200, 83, 0.35);
+  color: #fff;
+}
+
+/* ───────────── Aurora: capa difuminada de la marca ───────────── */
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--color-bg-primary);
+}
+
+.aurora__blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  will-change: transform;
+}
+
+.aurora__blob--a {
+  width: 60vmax;
+  height: 60vmax;
+  top: -25vmax;
+  left: -15vmax;
+  background: radial-gradient(circle, rgba(0, 200, 83, 0.38), transparent 65%);
+  transform: translate3d(calc(var(--sp) * 55vw), calc(var(--sp) * 70vh), 0)
+    scale(calc(1 + var(--sp) * 0.3));
+}
+
+.aurora__blob--b {
+  width: 50vmax;
+  height: 50vmax;
+  top: 10vh;
+  right: -22vmax;
+  background: radial-gradient(circle, rgba(0, 89, 42, 0.7), transparent 65%);
+  transform: translate3d(calc(var(--sp) * -45vw), calc(var(--sp) * 25vh), 0)
+    rotate(calc(var(--sp) * 180deg));
+}
+
+.aurora__blob--c {
+  width: 34vmax;
+  height: 34vmax;
+  bottom: -18vmax;
+  left: 30vw;
+  background: radial-gradient(circle, rgba(140, 255, 191, 0.16), transparent 65%);
+  transform: translate3d(calc(var(--sp) * -25vw), calc(var(--sp) * -55vh), 0)
+    scale(calc(0.8 + var(--sp) * 0.6));
+}
+
+.aurora__blob--d {
+  width: 28vmax;
+  height: 28vmax;
+  top: 45vh;
+  left: -12vmax;
+  background: radial-gradient(circle, rgba(0, 232, 101, 0.2), transparent 65%);
+  transform: translate3d(calc(var(--sp) * 35vw), calc(var(--sp) * -30vh), 0);
+}
+
+/* Respiración lenta independiente del scroll */
+.aurora__drift {
+  position: absolute;
+  inset: 0;
+  animation: aurora-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(3vw, -2vh, 0) rotate(4deg); }
+  100% { transform: translate3d(-3vw, 2vh, 0) rotate(-3deg); }
+}
+
+/* Retícula técnica que se desvanece en los bordes */
+.aurora__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: 0 calc(var(--sp) * -640px);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%);
+}
+
+/* Grano para quitar el aspecto "plano" del degradado */
+.aurora__noise {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Viñeta para mantener contraste del texto */
+.aurora__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 10, 10, 0.75) 100%);
+}
+
+/* ───────────── Barra de progreso de scroll ───────────── */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--sp));
+  background: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent), var(--color-accent-mint));
+  box-shadow: 0 0 12px rgba(0, 200, 83, 0.6);
+}
+
+/* ───────────── Navbar ───────────── */
+
+.nav-shell {
+  transition: background-color 0.3s, border-color 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
+  border: 1px solid transparent;
+}
+
+html[data-scrolled] .nav-shell {
+  background: rgba(14, 14, 14, 0.65);
+  border-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* ───────────── Utilidades de marca ───────────── */
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-accent-mint) 0%, var(--color-accent) 45%, var(--color-accent-hover) 70%, var(--color-accent-mint) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s linear infinite;
+}
+
+@keyframes gradient-pan {
+  to { background-position: -200% 0; }
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn-primary {
+  position: relative;
+  background: var(--color-accent);
+  color: #000;
+  box-shadow: 0 0 0 1px rgba(0, 200, 83, 0.4), 0 8px 30px -6px rgba(0, 200, 83, 0.55);
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  box-shadow: 0 0 0 1px rgba(0, 232, 101, 0.6), 0 12px 40px -6px rgba(0, 232, 101, 0.7);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(0, 200, 83, 0.6);
+  background: rgba(0, 200, 83, 0.08);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent));
+}
+
+.pulse-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+}
+
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-accent);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* ───────────── Tarjetas con spotlight (sigue al cursor) ───────────── */
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 200, 83, 0.14), transparent 60%);
+}
+
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 232, 101, 0.8), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.spotlight:hover::before,
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* ───────────── Borde animado (CTA) ───────────── */
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.beam-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.beam-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle), transparent 0deg, var(--color-accent) 60deg, var(--color-accent-mint) 90deg, transparent 150deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes beam-spin {
+  to { --angle: 360deg; }
+}
+
+/* ───────────── Marquee ───────────── */
+
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ───────────── Flujo animado del hero ───────────── */
+
+.flow-line {
+  stroke-dasharray: 4 6;
+  animation: flow-dash 1.2s linear infinite;
+}
+
+@keyframes flow-dash {
+  to { stroke-dashoffset: -20; }
+}
+
+.flow-step {
+  animation: flow-step 6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 1s);
+}
+
+@keyframes flow-step {
+  0%, 8% { border-color: rgba(255, 255, 255, 0.08); box-shadow: none; }
+  14%, 30% { border-color: rgba(0, 200, 83, 0.6); box-shadow: 0 0 24px -4px rgba(0, 200, 83, 0.45); }
+  40%, 100% { border-color: rgba(255, 255, 255, 0.08); box-shadow: none; }
+}
+
+.caret::after {
+  content: "▍";
+  margin-left: 2px;
+  color: var(--color-accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ───────────── Proceso con línea de progreso ligada al scroll ───────────── */
+
+.process-line {
+  transform-origin: 50% 0;
+  transform: scaleY(var(--p, 0));
+}
+
+[data-step] {
+  transition: opacity 0.4s, transform 0.4s;
+}
+
+[data-step] .step-num {
+  transition: background-color 0.4s, color 0.4s, box-shadow 0.4s, border-color 0.4s;
+}
+
+[data-step][data-active] .step-num {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000;
+  box-shadow: 0 0 0 6px rgba(0, 200, 83, 0.15), 0 0 30px rgba(0, 200, 83, 0.5);
+}
+
+/* ───────────── FAQ (acordeón sin JS de animación) ───────────── */
+
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.faq-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+/* ───────────── Reveal robusto ─────────────
+   Solo se oculta si el script de <head> marcó html.js.
+   Failsafe: a los 3 s se añade html.reveal-all. */
+
+html.js:not(.reveal-all) [data-reveal]:not([data-shown]) {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  filter: blur(6px);
+}
+
+[data-reveal] {
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .aurora__blob, .aurora__grid {
+    transform: none !important;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+
+  html.js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

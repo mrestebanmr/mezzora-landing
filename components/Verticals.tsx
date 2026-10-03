@@ -1,34 +1,33 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Dumbbell, UtensilsCrossed, ShoppingBag, Building2 } from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
-};
+import SectionHeader from "./SectionHeader";
 
 const verticals = [
   {
     icon: Dumbbell,
-    pill: "FITNESS & SPORT",
+    pill: "Fitness & Sport",
     title: "Palestre",
     description:
       "Gestione iscritti, prenotazioni classi, promemoria pagamenti e riattivazione membri inattivi.",
+    tasks: ["iscrizioni", "classi", "rinnovi"],
+    span: "md:col-span-7",
   },
   {
     icon: UtensilsCrossed,
-    pill: "RISTORAZIONE",
+    pill: "Ristorazione",
     title: "Ristoranti & Locali",
     description:
       "Conferma prenotazioni, gestione liste d'attesa, comunicazioni clienti e raccolta feedback.",
+    tasks: ["prenotazioni", "lista d'attesa", "recensioni"],
+    span: "md:col-span-5",
   },
   {
     icon: ShoppingBag,
-    pill: "VENDITA ONLINE",
+    pill: "Vendita online",
     title: "E-commerce",
     description:
       "Gestione ordini, assistenza clienti, recupero carrelli abbandonati e aggiornamenti in tempo reale.",
+    tasks: ["ordini", "carrelli", "assistenza"],
+    span: "md:col-span-5",
   },
   {
     icon: Building2,
@@ -36,58 +35,54 @@ const verticals = [
     title: "Piccole imprese",
     description:
       "Eliminiamo il lavoro manuale quotidiano: preventivi, follow-up, fatturazione e comunicazione clienti.",
+    tasks: ["preventivi", "fatture", "follow-up"],
+    span: "md:col-span-7",
   },
 ];
 
 export default function Verticals() {
   return (
-    <section className="bg-bg-secondary py-20 md:py-30">
+    <section id="settori" className="relative scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-[1200px] px-6">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <span className="text-sm font-semibold uppercase tracking-widest text-accent">
-            PER CHI È MEZZORA
-          </span>
-          <h2 className="mt-4 font-heading text-[32px] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary md:text-[48px] lg:text-[56px]">
-            Settori che trasformiamo.
-          </h2>
-          <p className="mt-4 max-w-[700px] text-lg leading-relaxed text-text-secondary md:text-xl">
-            Lavoriamo con attività italiane che vogliono crescere senza
-            impazzire.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Per chi è Mezzora"
+          title="Settori che trasformiamo."
+          subtitle="Lavoriamo con attività italiane che vogliono crescere senza impazzire."
+        />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-14 grid gap-5 md:grid-cols-12">
           {verticals.map((v, i) => (
-            <motion.div
+            <article
               key={v.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-                delay: i * 0.1,
-              }}
-              className="group rounded-2xl border border-border bg-bg-primary p-8 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
+              className={`spotlight glass group flex flex-col rounded-2xl p-7 md:p-9 ${v.span}`}
             >
-              <v.icon className="h-10 w-10 text-accent" />
-              <span className="mt-4 inline-block rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
-                {v.pill}
-              </span>
-              <h3 className="mt-3 font-heading text-xl font-bold text-text-primary md:text-2xl">
+              <div className="flex items-start justify-between gap-4">
+                <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent-deep text-black shadow-[0_8px_30px_-8px_rgba(0,200,83,0.7)]">
+                  <v.icon className="h-6 w-6" />
+                </span>
+                <span className="rounded-full border border-accent/25 bg-accent/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-accent">
+                  {v.pill}
+                </span>
+              </div>
+              <h3 className="mt-10 font-heading text-2xl font-bold tracking-tight text-text-primary md:text-3xl">
                 {v.title}
               </h3>
-              <p className="mt-2 text-base leading-relaxed text-text-secondary">
+              <p className="mt-3 max-w-[520px] text-base leading-relaxed text-text-secondary">
                 {v.description}
               </p>
-            </motion.div>
+              <ul className="mt-auto flex flex-wrap gap-2 pt-7">
+                {v.tasks.map((t) => (
+                  <li
+                    key={t}
+                    className="rounded-md border border-white/10 bg-black/30 px-2.5 py-1 font-mono text-[11px] text-text-secondary transition-colors group-hover:border-accent/30 group-hover:text-text-primary"
+                  >
+                    <span className="text-accent">✓</span> {t}
+                  </li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
       </div>

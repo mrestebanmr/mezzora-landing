@@ -1,28 +1,24 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Clock, Workflow, TrendingDown } from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
-};
+import SectionHeader from "./SectionHeader";
 
 const painPoints = [
   {
     icon: Clock,
+    code: "ERR_01",
     title: "Ore perse ogni giorno",
     description:
       "Risposte, follow-up, aggiornamenti manuali. Attività che si ripetono, giorno dopo giorno.",
   },
   {
     icon: Workflow,
+    code: "ERR_02",
     title: "Processi lenti e disorganizzati",
     description:
       "Informazioni sparse, strumenti che non comunicano, errori umani che costano caro.",
   },
   {
     icon: TrendingDown,
+    code: "ERR_03",
     title: "Opportunità che sfuggono",
     description:
       "Senza sistemi, perdi clienti potenziali mentre sei occupato con il lavoro operativo.",
@@ -31,51 +27,41 @@ const painPoints = [
 
 export default function Problem() {
   return (
-    <section className="bg-bg-secondary py-20 md:py-30">
+    <section id="problema" className="relative scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-[1200px] px-6">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <span className="text-sm font-semibold uppercase tracking-widest text-accent">
-            IL PROBLEMA
-          </span>
-          <h2 className="mt-4 font-heading text-[32px] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary md:text-[48px] lg:text-[56px]">
-            Stai perdendo tempo ogni giorno.
-          </h2>
-          <p className="mt-4 max-w-[700px] text-lg leading-relaxed text-text-secondary md:text-xl">
-            La maggior parte dei titolari di piccole imprese spende ore preziose
-            in attività ripetitive che non generano valore. È normale — ma non è
-            inevitabile.
-          </p>
-        </motion.div>
+        <SectionHeader
+          eyebrow="Il problema"
+          title={
+            <>
+              Stai perdendo tempo <span className="text-white/40">ogni giorno.</span>
+            </>
+          }
+          subtitle="La maggior parte dei titolari di piccole imprese spende ore preziose in attività ripetitive che non generano valore. È normale — ma non è inevitabile."
+        />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
           {painPoints.map((point, i) => (
-            <motion.div
+            <article
               key={point.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-                delay: i * 0.1,
-              }}
-              className="group rounded-2xl border border-border bg-bg-primary p-8 transition-colors duration-300 hover:border-accent/50"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
+              className="spotlight glass rounded-2xl p-7 md:p-8"
             >
-              <point.icon className="h-8 w-8 text-accent" />
-              <h3 className="mt-4 font-heading text-xl font-bold text-text-primary md:text-2xl">
+              <div className="flex items-center justify-between">
+                <span className="grid h-11 w-11 place-items-center rounded-xl border border-accent/25 bg-accent/10 text-accent">
+                  <point.icon className="h-5 w-5" />
+                </span>
+                <span className="font-mono text-[11px] tracking-widest text-text-secondary/70">
+                  {point.code}
+                </span>
+              </div>
+              <h3 className="mt-8 font-heading text-xl font-bold tracking-tight text-text-primary md:text-2xl">
                 {point.title}
               </h3>
-              <p className="mt-2 text-base leading-relaxed text-text-secondary">
+              <p className="mt-3 text-base leading-relaxed text-text-secondary">
                 {point.description}
               </p>
-            </motion.div>
+            </article>
           ))}
         </div>
       </div>
