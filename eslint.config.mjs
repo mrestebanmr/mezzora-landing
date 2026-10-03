@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Proyectos de clientes: cada uno tiene su propio lint.
-    "clientes/**",
   ]),
 ]);
 
