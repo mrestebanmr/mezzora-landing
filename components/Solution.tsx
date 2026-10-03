@@ -1,11 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
-};
+import SectionHeader from "./SectionHeader";
 
 const steps = [
   {
@@ -36,54 +29,45 @@ const steps = [
 
 export default function Solution() {
   return (
-    <section className="bg-bg-primary py-20 md:py-30">
-      <div className="mx-auto max-w-[1200px] px-6">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <span className="text-sm font-semibold uppercase tracking-widest text-accent">
-            LA SOLUZIONE
-          </span>
-          <h2 className="mt-4 font-heading text-[32px] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary md:text-[48px] lg:text-[56px]">
-            Sistemi che lavorano al posto tuo.
-          </h2>
-          <p className="mt-4 max-w-[700px] text-lg leading-relaxed text-text-secondary md:text-xl">
-            Creiamo sistemi intelligenti che automatizzano il tuo lavoro
-            operativo. Tu ti concentri su ciò che conta — il resto lo gestiamo
-            noi.
-          </p>
-        </motion.div>
+    <section id="soluzione" className="relative scroll-mt-24 py-20 md:py-28">
+      <div className="mx-auto grid max-w-[1200px] gap-14 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <SectionHeader
+            eyebrow="La soluzione"
+            title={
+              <>
+                Sistemi che lavorano <span className="text-gradient">al posto tuo.</span>
+              </>
+            }
+            subtitle="Creiamo sistemi intelligenti che automatizzano il tuo lavoro operativo. Tu ti concentri su ciò che conta — il resto lo gestiamo noi."
+          />
+        </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.num}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-                delay: i * 0.1,
-              }}
-              className="rounded-2xl border border-border bg-bg-secondary p-8"
-            >
-              <span className="font-heading text-4xl font-extrabold text-accent">
-                {step.num}
-              </span>
-              <h3 className="mt-4 font-heading text-xl font-bold text-text-primary md:text-2xl">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-base leading-relaxed text-text-secondary">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
+        <div data-process className="relative">
+          {/* Riel y relleno que avanza con el scroll */}
+          <div className="absolute bottom-6 left-[23px] top-6 w-px bg-white/10" aria-hidden="true" />
+          <div
+            className="process-line absolute bottom-6 left-[23px] top-6 w-px bg-gradient-to-b from-accent-mint via-accent to-accent-deep shadow-[0_0_12px_rgba(0,200,83,0.8)]"
+            aria-hidden="true"
+          />
+
+          <ol className="space-y-6 md:space-y-10">
+            {steps.map((step) => (
+              <li key={step.num} data-step className="relative flex gap-6">
+                <span className="step-num relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/15 bg-bg-secondary font-mono text-sm font-medium text-text-secondary">
+                  {step.num}
+                </span>
+                <div data-reveal className="glass flex-1 rounded-2xl p-6 md:p-8">
+                  <h3 className="font-heading text-xl font-bold tracking-tight text-text-primary md:text-2xl">
+                    {step.title}
+                  </h3>
+                  <p className="mt-3 text-base leading-relaxed text-text-secondary">
+                    {step.description}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
