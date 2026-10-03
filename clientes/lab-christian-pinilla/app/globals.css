@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Paleta del manual de marca */
+@theme inline {
+  --color-graphite: #2b2622;
+  --color-graphite-soft: #3a332e;
+  --color-porcelain: #f6f1ea;
+  --color-porcelain-deep: #ede5d9;
+  --color-terracotta: #b5654a;
+  /* Terracota oscurecida para texto pequeño y botones: contraste AA sobre porcelana */
+  --color-terracotta-strong: #9a4f37;
+  --color-sand: #8a7c70;
+  /* Texto secundario sobre porcelana con contraste AA */
+  --color-ink-muted: #645850;
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-manrope);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-porcelain);
+  color: var(--color-graphite);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(181, 101, 74, 0.25);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* ───────────── Reveal (lo activa el script de <head>) ───────────── */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+html.js [data-reveal][data-shown],
+html.reveal-all [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ───────────── Ticker en CSS puro ───────────── */
+
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ───────────── Navbar al hacer scroll ───────────── */
+
+.navbar {
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+}
+
+html[data-scrolled] .navbar {
+  background: rgba(246, 241, 234, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(43, 38, 34, 0.08);
+}
+
+/* ───────────── Diente de la guía de color ───────────── */
+
+.shade-tooth {
+  transition: fill 0.5s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee {
+    animation: none;
+  }
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
