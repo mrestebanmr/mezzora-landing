@@ -7,21 +7,23 @@ import Verticals from "@/components/Verticals";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { dictionaries, type Locale } from "@/lib/i18n";
 
-export default function Home() {
+export default function Landing({ locale }: { locale: Locale }) {
+  const t = dictionaries[locale];
   return (
     <>
-      <Navbar />
+      <Navbar t={t} locale={locale} />
       <main>
-        <Hero />
-        <Ticker />
-        <Problem />
-        <Solution />
-        <Verticals />
-        <FAQ />
-        <CTA />
+        <Hero t={t} />
+        <Ticker t={t} />
+        <Problem t={t} />
+        <Solution t={t} />
+        <Verticals t={t} />
+        <FAQ t={t.faq} />
+        <CTA t={t} />
       </main>
-      <Footer />
+      <Footer t={t} />
     </>
   );
 }
