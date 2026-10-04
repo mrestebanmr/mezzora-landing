@@ -1,22 +1,11 @@
-const items = [
-  "WhatsApp",
-  "Prenotazioni",
-  "Calendari",
-  "CRM",
-  "E-commerce",
-  "Pagamenti",
-  "Email",
-  "Gestionali",
-  "Dati in UE",
-  "GDPR",
-];
+import type { Dict } from "@/lib/i18n";
 
-export default function Ticker() {
-  const row = [...items, ...items];
+export default function Ticker({ t }: { t: Dict }) {
+  const row = [...t.ticker.items, ...t.ticker.items];
   return (
     <div className="relative border-y border-white/[0.06] bg-black/30 py-5 backdrop-blur-sm">
       <p className="mx-auto mb-4 max-w-[1200px] px-6 font-mono text-[11px] uppercase tracking-[0.14em] text-text-secondary">
-        Si integra con gli strumenti che usi già
+        {t.ticker.title}
       </p>
       <div className="marquee overflow-hidden" aria-hidden="true">
         <div className="marquee__track">

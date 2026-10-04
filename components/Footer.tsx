@@ -1,18 +1,21 @@
-const columns = [
-  {
-    title: "Contatti",
-    links: [
-      { label: "WhatsApp", href: "https://wa.me/393279873102", external: true },
-      { label: "esteban@mezzora.io", href: "mailto:esteban@mezzora.io", external: false },
-    ],
-  },
-  {
-    title: "Risorse",
-    links: [{ label: "Prenota call", href: "https://calendly.com/mezzora", external: true }],
-  },
-];
+import { CALENDLY, WHATSAPP_NUMBER, type Dict } from "@/lib/i18n";
 
-export default function Footer() {
+export default function Footer({ t }: { t: Dict }) {
+  const f = t.footer;
+  const columns = [
+    {
+      title: f.contacts,
+      links: [
+        { label: "WhatsApp", href: `https://wa.me/${WHATSAPP_NUMBER}`, external: true },
+        { label: "esteban@mezzora.io", href: "mailto:esteban@mezzora.io", external: false },
+      ],
+    },
+    {
+      title: f.resources,
+      links: [{ label: f.bookCall, href: CALENDLY, external: true }],
+    },
+  ];
+
   return (
     <footer className="relative overflow-hidden border-t border-white/[0.06] bg-black/40 pt-16 backdrop-blur-sm">
       <div className="mx-auto max-w-[1200px] px-6">
@@ -22,7 +25,7 @@ export default function Footer() {
               mezzora
             </span>
             <p className="mt-3 max-w-[280px] text-sm leading-relaxed text-text-secondary">
-              Automazione intelligente per imprese italiane.
+              {f.tagline}
             </p>
           </div>
 
@@ -48,14 +51,14 @@ export default function Footer() {
           ))}
 
           <div>
-            <h4 className="font-mono text-[11px] uppercase tracking-[0.14em] text-text-primary">Sede</h4>
-            <p className="mt-4 text-sm text-text-secondary">Teramo, Italia</p>
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.14em] text-text-primary">{f.office}</h4>
+            <p className="mt-4 text-sm text-text-secondary">{f.city}</p>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col gap-2 border-t border-white/[0.06] pt-6 font-mono text-[11px] text-text-secondary md:flex-row md:justify-between">
-          <p>P.IVA in fase di costituzione</p>
-          <p>© 2026 Mezzora · Tutti i diritti riservati</p>
+          <p>{f.vat}</p>
+          <p>{f.rights}</p>
         </div>
       </div>
 
