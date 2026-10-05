@@ -58,6 +58,8 @@ Estructura estándar (adaptar el orden por vertical):
 - Formulario de conversión: al enviar, abre WhatsApp con un mensaje prellenado (`wa.me/<num>?text=`). Si existe `NEXT_PUBLIC_LEAD_WEBHOOK`, además hace POST del lead en JSON. Ese es el gancho para vender la automatización n8n (lead → CRM → respuesta automática → follow-up).
 - Fotos en `public/images/` con nombres descriptivos, en JPG q85, máximo 1920px. `alt` descriptivo en italiano.
 - Animaciones: `Reveal` sin librerías, con `data-reveal` y un script inline en `<head>` (IntersectionObserver, failsafe de 3s, respeta `prefers-reduced-motion`). **Nunca framer-motion con `initial` de opacity 0**: si el JS falla (4G mala), la página queda en blanco. El marquee se hace con CSS puro.
+- **Menú móvil fuera del `<header>`** (hermano, no hijo): si el header usa `backdrop-blur`/`backdrop-filter`, todo hijo `position: fixed` queda atrapado dentro del header y el overlay se rompe en el móvil. Probar siempre abrir el menú en viewport iPhone.
+- Efectos de scroll: un solo loop `requestAnimationFrame` (progreso, parallax con `data-parallax` y margen de imagen ±10%, contadores `data-count`). Estado final por defecto en el HTML: sin JS todo se ve completo.
 - Accesibilidad mínima: `aria-label` en los botones de icono, `aria-pressed` en los chips, contraste AA en el texto del cuerpo.
 
 ## Fase 4 — QA (obligatorio antes de mostrar)
